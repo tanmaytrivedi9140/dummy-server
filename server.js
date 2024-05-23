@@ -22,6 +22,6 @@ app.get("/", (req, res) => {
 app.use('/req',dummy)
 // port no for server -----------------------------
 app.listen(port, () => {
-  console.log("listening in port 5000");
+  console.log("hello server this side in port 5000");
 });
 // 656e3c104768eacc6e682d36
