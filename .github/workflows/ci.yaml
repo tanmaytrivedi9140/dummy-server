@@ -18,13 +18,13 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SECRET_KEY }}
           KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
         run: |
-          echo "$SSH_PRIVATE_KEY" > keyfile
-          chmod 600 keyfile
+          # Create temporary directory for SSH key
           mkdir -p ~/.ssh
-          echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-          
-          # Remove offending host key
-          ssh-keygen -f ~/.ssh/known_hosts -R "ec2-43-204-22-180.ap-south-1.compute.amazonaws.com"
-          
-          # SSH and deploy
-          ssh -o StrictHostKeyChecking=no -t -i keyfile ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
+          # Write SSH private key to temporary file
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+          # Set correct permissions for SSH private key
+          chmod 600 ~/.ssh/id_rsa
+          # Add the host to known hosts
+          echo "${KNOWN_HOSTS}" > ~/.ssh/known_hosts
+          # SSH into the server and execute deployment script
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
