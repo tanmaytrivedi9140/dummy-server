@@ -5,12 +5,10 @@ on:
     branches:
       - main
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,4 +22,9 @@ jobs:
           chmod 600 keyfile
           mkdir -p ~/.ssh
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-          ssh -t -i keyfile ubuntu@ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
+          
+          # Remove offending host key
+          ssh-keygen -f ~/.ssh/known_hosts -R "ec2-43-204-22-180.ap-south-1.compute.amazonaws.com"
+          
+          # SSH and deploy
+          ssh -o StrictHostKeyChecking=no -t -i keyfile ubuntu@ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
