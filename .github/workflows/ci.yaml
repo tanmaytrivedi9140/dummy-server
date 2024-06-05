@@ -27,4 +27,4 @@ jobs:
           ssh-keygen -f ~/.ssh/known_hosts -R "ec2-43-204-22-180.ap-south-1.compute.amazonaws.com"
           
           # SSH and deploy
-          ssh  -t -i keyfile ubuntu@ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
+          ssh  keyfile ubuntu@ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
