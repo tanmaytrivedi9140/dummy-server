@@ -23,7 +23,5 @@ jobs:
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           # Set correct permissions for SSH private key
           chmod 600 ~/.ssh/id_rsa
-          # Fetch and add new host key to known_hosts
-          ssh-keyscan -H ec2-43-204-22-180.ap-south-1.compute.amazonaws.com >> ~/.ssh/known_hosts
           # SSH into the server and execute deployment script
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
