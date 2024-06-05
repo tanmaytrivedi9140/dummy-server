@@ -18,7 +18,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SECRET_KEY }}
           KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
         run: |
-          # Create temporary directory for SSH key
+          # Create ~/.ssh directory if it doesn't exist
           mkdir -p ~/.ssh
           # Write SSH private key to temporary file
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
