@@ -16,7 +16,6 @@ jobs:
       - name: SSH and deploy
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SECRET_KEY }}
-          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
         run: |
           # Create ~/.ssh directory if it doesn't exist
           mkdir -p ~/.ssh
@@ -24,9 +23,7 @@ jobs:
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           # Set correct permissions for SSH private key
           chmod 600 ~/.ssh/id_rsa
-          # Remove known_hosts file
-          rm -f ~/.ssh/known_hosts
-          # Add the host to known hosts
-          echo "${KNOWN_HOSTS}" > ~/.ssh/known_hosts
+          # Fetch and add new host key to known_hosts
+          ssh-keyscan -H ec2-43-204-22-180.ap-south-1.compute.amazonaws.com >> ~/.ssh/known_hosts
           # SSH into the server and execute deployment script
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@ec2-43-204-22-180.ap-south-1.compute.amazonaws.com "sudo bash ~/deploy.sh"
