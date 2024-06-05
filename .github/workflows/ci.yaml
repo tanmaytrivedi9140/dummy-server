@@ -24,6 +24,8 @@ jobs:
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
           # Set correct permissions for SSH private key
           chmod 600 ~/.ssh/id_rsa
+          # Remove offending host key
+          ssh-keygen -f ~/.ssh/known_hosts -R "ec2-43-204-22-180.ap-south-1.compute.amazonaws.com"
           # Add the host to known hosts
           echo "${KNOWN_HOSTS}" > ~/.ssh/known_hosts
           # SSH into the server and execute deployment script
